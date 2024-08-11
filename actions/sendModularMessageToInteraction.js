@@ -59,7 +59,7 @@ module.exports = {
 
     bridge.data.interactionHandlers[msg.id] = {}
 
-    message.components.forEach(component => {
+    message.components?.forEach(component => {
       component.run(msg);
     })
   },

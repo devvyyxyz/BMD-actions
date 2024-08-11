@@ -24,8 +24,8 @@ module.exports = {
         nsfw: { name: "Is NSFW?" },
         slowmode: { name: "Slowmode (Seconds)" },
         position: { name: "Position" },
-        webhooks: { name: "Webhook List" },
-        members: { name: "Connected Members List" }
+        webhooks: { name: "Webhooks" },
+        members: { name: "Connected Members" }
       },
     },
     "-",
@@ -58,7 +58,8 @@ module.exports = {
           output = [];
 
           for (let i in ids) {
-            output = await bridge.getUser({ type: "id", value: ids[i] });
+            let user = await bridge.getUser({ type: "id", value: ids[i] });
+            output.push(user);
           }
         break
       }

@@ -47,10 +47,10 @@ module.exports = {
 
     let output;
     switch (values.get.type) {
-      case "Color":
+      case "color":
         output = role.color.toString(16);
         break;
-      case "Members List":
+      case "members":
         output = (await require('./getGuildInfo').getMembers(bridge)).filter(m => m.roles.includes(role.id));
         break;
       default:

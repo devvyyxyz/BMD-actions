@@ -29,9 +29,9 @@ const p = {
   'USE_EMBEDDED_ACTIVITIES': "Use Activities",
   'PRIORITY_SPEAKER': "Priority Speaker",
 }
-function swap(json){
+function swap(json) {
   var ret = {};
-  for(var key in json){
+  for (var key in json) {
     ret[json[key]] = key;
   }
   return ret;
@@ -86,17 +86,11 @@ module.exports = {
               storeAs: "permission",
               forcePush: true,
               name: "Permission",
-              choices: Object.values(p).map(permission => {return {name: permission}})
+              choices: Object.values(p).map(permission => { return { name: permission } })
             },
           ]
         }
       }
-    },
-    "-",
-    {
-      element: "toggle",
-      name: "Don't Allow a Permission If The Member Already Has It",
-      storeAs: "dontCopy"
     }
   ],
 
@@ -116,10 +110,13 @@ module.exports = {
 
     let memberPermissions = channel.permissionsOf(member).json;
 
+    let allowedPermissions = {};
+
     for (let i in values.permissions) {
       let permission = values.permissions[i].data;
       if (permission.action == 'Allow') {
         memberPermissions[permissions[permission.permission]] = true;
+        allowedPermissions[permissions[permission.permission]] = true;
       } else if (permission.action == 'Neutralize') {
         delete memberPermissions[permissions[permission.permission]]
       } else {
@@ -132,11 +129,7 @@ module.exports = {
 
     for (let permission in memberPermissions) {
       if (memberPermissions[permission] == true) {
-        if (values.dontCopy) {
-          if (!member.permissions.has(permission)) {
-            endPermissions = BigInt(Permissions[permission]) + BigInt(endPermissions)
-          }
-        } else {
+        if (!member.permissions.has(permission) || allowedPermissions[permission]) {
           endPermissions = BigInt(Permissions[permission]) + BigInt(endPermissions)
         }
       } else {

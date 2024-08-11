@@ -193,6 +193,6 @@ module.exports = {
 
     setTimeout(() => {
       client.off('interactionCreate', handleModalSubmit)
-    }, 72000);
+    }, 3600000);
   },
 };

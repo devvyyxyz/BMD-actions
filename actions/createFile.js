@@ -24,6 +24,6 @@ module.exports = {
   run(values, message, client, bridge) {
     let fs = bridge.fs;
 
-    fs.writeFileSync(bridge.file(bridge.transf(values.path)), bridge.transf(values.content))
+    fs.writeFileSync(bridge.file(values.path), bridge.transf(values.content))
   },
 };

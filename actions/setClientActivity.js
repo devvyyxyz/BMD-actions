@@ -54,6 +54,11 @@ module.exports = {
           placeholder: "Song"
         },
         {
+          name: "Streaming",
+          field: true,
+          placeholder: "Stream URL"
+        },
+        {
           name: "None"
         }
       ]
@@ -84,6 +89,7 @@ module.exports = {
       Watching: ActivityTypes.WATCHING,
       Competing: ActivityTypes.COMPETING,
       Listening: ActivityTypes.LISTENING,
+      Streaming: ActivityTypes.STREAMING,
       Custom: ActivityTypes.CUSTOM
     }
 

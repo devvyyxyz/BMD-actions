@@ -105,6 +105,7 @@ module.exports = {
     const bulk = [];
 
     let deletedMessages = 0;
+    let realDeletedMessages = 0;
     const messages = (await channel.getMessages({ limit: amount * 5 })).filter((message) => {
       return (message.content.toLowerCase().includes(mustInclude.toLowerCase()) && !!(!!!userFilter || message.author.id == userFilter.id))
     });
@@ -122,11 +123,12 @@ module.exports = {
     }
 
     if (bulk.length != 0) {
-      await client.rest.channels.deleteMessages(channel.id, bulk, reason)
+      await client.rest.channels.deleteMessages(channel.id, bulk, reason).catch(err => console.log(err));
+      realDeletedMessages = deletedMessages;
     }
 
     if (values.deletedCountStorage) {
-      bridge.store(values.deletedCountStorage, deletedMessages);
+      bridge.store(values.deletedCountStorage, realDeletedMessages);
     }
   }
 };

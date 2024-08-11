@@ -29,17 +29,6 @@ module.exports = {
       name: "Store Role As"
     }
   ],
-  guide: [
-    {
-      element: "text",
-      text: "What is an role code?",
-      large: true
-    },
-    {
-      element: "text",
-      text: "An role code is the text after a discord.gg role. Example: discord.gg/hello | Role Code: hello"
-    },
-  ],
   subtitle: (data, constants) => {
     return `Find By ${data.method} (${data.value || "Blank"}) - Store As ${constants.variable(data.store)}`
   },

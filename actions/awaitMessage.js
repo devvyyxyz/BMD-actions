@@ -59,9 +59,6 @@ module.exports = {
   compatibility: ["Any"],
 
   subtitle: (values, constants) => {
-    try{
-    console.log(constants.channel(values.channel))
-  } catch (err) {console.error(err)}
     return `In Channel: ${constants.channel(values.channel)} - Stop Awaiting After: ${values.stopAwaitingAfter}s`
   },
 

@@ -14,12 +14,12 @@ module.exports = {
     "-",
     {
       element: "typedDropdown",
-      name: "Split At",
+      name: "Split",
       storeAs: "split",
       choices: {
-        position: { name: "Position", field: true },
-        text_before: { name: "Before Specific Piece Of Text", field: true },
-        text_after: { name: "After Specific Piece Of Text", field: true },
+        position: { name: "At Position", field: true },
+        text_before: { name: "Before Text", field: true },
+        text_after: { name: "After Text", field: true },
       }
     },
     "-",

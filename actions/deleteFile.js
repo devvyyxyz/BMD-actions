@@ -17,6 +17,6 @@ module.exports = {
   run(values, message, client, bridge) {
     let fs = bridge.fs;
 
-    fs.unlinkSync(bridge.file(bridge.transf(values.path)));
+    fs.unlinkSync(bridge.file(values.path));
   },
 };

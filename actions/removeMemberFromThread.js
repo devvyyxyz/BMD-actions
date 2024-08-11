@@ -11,7 +11,8 @@ module.exports = {
     },
     "-",
     {
-      element: "var",
+      element: "channel",
+      excludeUsers: true,
       storeAs: "thread",
       name: "Thread Variable"
     }

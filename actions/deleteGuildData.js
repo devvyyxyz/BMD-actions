@@ -28,9 +28,9 @@ module.exports = {
     var storedData = bridge.data.IO.get();
 
     if (values.deleteType == 'All Data') {
-      delete storedData.lists[guild.id];
+      delete storedData.guilds[guild.id];
     } else {
-      delete storedData.lists[guild.id][bridge.transf(values.delete)];
+      delete storedData.guilds[guild.id][bridge.transf(values.delete)];
     }
 
     bridge.data.IO.write(storedData);

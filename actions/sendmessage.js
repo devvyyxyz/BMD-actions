@@ -596,6 +596,7 @@ module.exports = {
       },
       storeAs: "embeds",
     },
+    "-",
     {
       element: "menu",
       max: 1,
@@ -610,11 +611,127 @@ module.exports = {
           inheritData: true,
           UI: [
             {
+              element: "menu",
+              name: "Attachments",
+              storeAs: "attachments",
+              max: 10,
+              types: {
+                attachment: "Attachment",
+              },
+              UItypes: {
+                attachment: {
+                  name: "Attachment",
+                  data: { name: "" },
+                  preview: "`Name: ${option.data.name}",
+                  UI: [
+                    {
+                      element: "image",
+                      storeAs: "image",
+                      name: "File"
+                    },
+                    "-",
+                    {
+                      element: "input",
+                      name: "Attachment Name",
+                      storeAs: "name"
+                    },
+                    {
+                      element: "toggle",
+                      storeAs: "spoiler",
+                      name: "Mark As Spoiler?"
+                    }
+                  ]
+                }
+              }
+            },
+            "-",
+            {
+              element: "menu",
+              name: "Poll",
+              storeAs: "poll",
+              max: 1,
+              types: {
+                poll: "Poll"
+              },
+              UItypes: {
+                poll: {
+                  name: "Poll",
+                  data: { options: [], title: "Poll", duration: { type: "24h", value: "" } },
+                  preview: "`${option.options.length} Options`",
+                  UI: [
+                    {
+                      element: "input",
+                      storeAs: "title",
+                      name: "Question",
+                      placeholder: "Poll Header"
+                    },
+                    "-",
+                    {
+                      element: "typedDropdown",
+                      storeAs: "duration",
+                      name: "Duration",
+                      choices: {
+                        "1h": { name: "1 Hour" },
+                        "4h": { name: "4 Hours" },
+                        "8h": { name: "8 Hours" },
+                        "24h": { name: "24 Hours" },
+                        "72h": { name: "3 Days" },
+                        "168h": { name: "1 Week" },
+                        "custom": { name: "Custom (Hours)", field: true },
+                      }
+                    },
+                    "-",
+                    {
+                      element: "menu",
+                      name: "Options",
+                      storeAs: "options",
+                      max: 10,
+                      types: {
+                        pollOption: "Option"
+                      },
+                      UItypes: {
+                        pollOption: {
+                          name: "Option",
+                          data: { name: "" },
+                          preview: "",
+                          UI: [
+                            {
+                              element: "input",
+                              storeAs: "name",
+                              name: "Option Label"
+                            },
+                            {
+                              element: "inputGroup",
+                              nameSchemes: ["Emoji Name <span style='opacity: 50%;'>Optional</span>", "Emoji ID <span style='opacity: 50%;'>Optional</span>"],
+                              storeAs: ["emojiName", "emojiID"],
+                              placeholder: ["Can Also Be An Emoji", ""]
+                            },
+                            {
+                              element: "toggle",
+                              name: "Make The Emoji Animated",
+                              storeAs: "isEmojiAnimated"
+                            },
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      element: "toggle",
+                      storeAs: "multiSelect",
+                      name: "Allow Multiple Selections"
+                    }
+                  ]
+                }
+              }
+            },
+            "-",
+            {
               element: "toggleGroup",
               storeAs: ["replyToInteraction", "mentions"],
               prefer: 0,
               nameSchemes: ["If Possible, Send As Interaction Reply", "Allow Mentions"]
             },
+            "_",
             {
               element: "toggleGroup",
               storeAs: ["dontSend", "ephemeral"],
@@ -628,6 +745,18 @@ module.exports = {
               storeAs: "updateMessage",
               name: "Message To Update"
             },
+            "_",
+            {
+              element: "toggleGroup",
+              storeAs: ["updateContent", "updateComponents"],
+              nameSchemes: ["Don't Update Content", "Don't Update Components"]
+            },
+            "_",
+            {
+              element: "toggleGroup",
+              storeAs: ["updateEmbeds", "updateAttachments"],
+              nameSchemes: ["Don't Update Embeds", "Don't Update Attachments"]
+            }
           ]
         }
       }
@@ -653,121 +782,6 @@ module.exports = {
       name: "Store Message As",
       optional: true
     },
-    "-",
-    {
-      element: "menu",
-      name: "Poll",
-      storeAs: "poll",
-      max: 1,
-      types: {
-        poll: "Poll"
-      },
-      UItypes: {
-        poll: {
-          name: "Poll",
-          data: { options: [], title: "Poll", duration: { type: "24h", value: "" } },
-          preview: "`${option.options.length} Options`",
-          UI: [
-            {
-              element: "input",
-              storeAs: "title",
-              name: "Question",
-              placeholder: "Poll Header"
-            },
-            "-",
-            {
-              element: "typedDropdown",
-              storeAs: "duration",
-              name: "Duration",
-              choices: {
-                "1h": { name: "1 Hour" },
-                "4h": { name: "4 Hours" },
-                "8h": { name: "8 Hours" },
-                "24h": { name: "24 Hours" },
-                "72h": { name: "3 Days" },
-                "168h": { name: "1 Week" },
-                "custom": { name: "Custom (Hours)", field: true },
-              }
-            },
-            "-",
-            {
-              element: "menu",
-              name: "Options",
-              storeAs: "options",
-              max: 10,
-              types: {
-                pollOption: "Option"
-              },
-              UItypes: {
-                pollOption: {
-                  name: "Option",
-                  data: { name: "" },
-                  preview: "",
-                  UI: [
-                    {
-                      element: "input",
-                      storeAs: "name",
-                      name: "Option Label"
-                    },
-                    {
-                      element: "inputGroup",
-                      nameSchemes: ["Emoji Name <span style='opacity: 50%;'>Optional</span>", "Emoji ID <span style='opacity: 50%;'>Optional</span>"],
-                      storeAs: ["emojiName", "emojiID"],
-                      placeholder: ["Can Also Be An Emoji", ""]
-                    },
-                    {
-                      element: "toggle",
-                      name: "Make The Emoji Animated",
-                      storeAs: "isEmojiAnimated"
-                    },
-                  ]
-                }
-              }
-            },
-            {
-              element: "toggle",
-              storeAs: "multiSelect",
-              name: "Allow Multiple Selections"
-            }
-          ]
-        }
-      }
-    },
-    "-",
-    {
-      element: "menu",
-      name: "Attachments",
-      storeAs: "attachments",
-      max: 10,
-      types: {
-        attachment: "Attachment",
-      },
-      UItypes: {
-        attachment: {
-          name: "Attachment",
-          data: { name: "" },
-          preview: "`Name: ${option.data.name}",
-          UI: [
-            {
-              element: "image",
-              storeAs: "image",
-              name: "File"
-            },
-            "-",
-            {
-              element: "input",
-              name: "Attachment Name",
-              storeAs: "name"
-            },
-            {
-              element: "toggle",
-              storeAs: "spoiler",
-              name: "Mark As Spoiler?"
-            }
-          ]
-        }
-      }
-    }
   ],
 
   script: (data) => {
@@ -789,7 +803,7 @@ module.exports = {
 
   init: (values, bridge) => {
     function isTemp(component) {
-      return component.data.type.type != 'persistent'
+      return component.data.type?.type != 'persistent'
     }
 
     let index = 1;
@@ -804,6 +818,7 @@ module.exports = {
               bridge.interactionHandlers[ComponentTypes.BUTTON][button.data.customID == 'Custom' ? button.data.id : `${bridge.data.id}-${index}`] = {
                 actions: button.data.actions,
                 interactionStorage: components.data.storeInteractionAs,
+                storeInteractionAuthorAs: components.data.storeInteractionAuthorAs,
                 pure: { ...components.data, ...button.data }
               }
             }
@@ -833,6 +848,7 @@ module.exports = {
               optionsStorage: components.data.storeOptionsListAs,
               actions: components.data.onSubmit,
               interactionStorage: components.data.storeInteractionAs,
+              storeInteractionAuthorAs: components.data.storeInteractionAuthorAs,
               raw: true,
               pure: components.data
             }
@@ -1081,6 +1097,7 @@ module.exports = {
               componentConnections[id] = {
                 onInteract: button.data.actions,
                 storeInteractionAs: button.data.storeInteractionAs,
+                storeInteractionAuthorAs: components.data.storeInteractionAuthorAs,
                 run: (interaction) => {
                   bridge.createTemporary({ class: "interactionStuff", name: "current", value: interaction });
                   bridge.store(components.data.storeInteractionAs, interaction);
@@ -1117,10 +1134,12 @@ module.exports = {
             onInteract: components.data.onSubmit,
             storeInteractionAs: components.data.storeInteractionAs,
             storeSelectionListAs: components.data.storeOptionsListAs,
+            storeInteractionAuthorAs: components.data.storeInteractionAuthorAs,
             options: {},
-            run: async (interaction) => {
+            run: async (interaction, selectionList) => {
               bridge.createTemporary({ class: "interactionStuff", name: "current", value: interaction });
               bridge.store(components.data.storeInteractionAs, interaction);
+              bridge.store(components.data.storeOptionsListAs, selectionList);
               bridge.store(components.data.storeInteractionAuthorAs, interaction.user);
               bridge.runner(components.data.onSubmit);
             },
@@ -1172,6 +1191,7 @@ module.exports = {
             componentConnections[id] = {
               onInteract: components.data.onRun,
               storeInteractionAs: components.data.storeInteractionAs,
+              storeInteractionAuthorAs: components.data.storeInteractionAuthorAs,
               storeSelectionListAs: components.data.storeSelectionListAs,
               type: typeMap[endComponents[componentIndex].components[0].type],
               run: (interaction, values) => {
@@ -1356,6 +1376,20 @@ module.exports = {
       
       let messageToUpdate = values.updateMessage ? await bridge.getMessage(values.updateMessage) : undefined;
 
+      if (values.updateContent) {
+        delete parameters.content;
+      }
+      if (values.updateComponents) {
+        delete parameters.components;
+        componentConnections = bridge.data.interactionHandlers[`${messageToUpdate.id}`];
+      }
+      if (values.updateEmbeds) {
+        delete parameters.embeds;
+      }
+      if (values.updateAttachments) {
+        delete parameters.attachments;
+      }
+
       if (values.dontSend != true && !messageToUpdate) {
         let replyInteraction = bridge.getTemporary({ class: "interactionStuff", name: "current" });
         if (values.replyToInteraction && typeof replyInteraction?.acknowledged == 'boolean') {
@@ -1364,14 +1398,14 @@ module.exports = {
               followup.interaction = replyInteraction;
               finishOff(followup.message);
               messageStorage = await followup.id;
-            });
+            }).catch((e) => {console.log(e); resolve()});
           } else {
             replyInteraction.createMessage(parameters).then(async () => {
               let msg = await replyInteraction.getOriginal();
               msg.interaction = replyInteraction;
               finishOff(msg)
               messageStorage = await msg.id;
-            });
+            }).catch((e) => {console.log(e); resolve()});
           };
           return
         }
@@ -1381,20 +1415,20 @@ module.exports = {
               followup.interaction = message;
               finishOff(followup.message)
               messageStorage = await followup.id
-            })
+            }).catch((e) => {console.log(e); resolve()});
           } else {
             message.createMessage(parameters).then(async () => {
               let msg = await message.getOriginal();
               msg.interaction = message;
               finishOff(msg)
               messageStorage = msg.id;
-            })
+            }).catch((e) => {console.log(e); resolve()});
           }
         } else if (values.channel.type == 'commandMessage') {
           (message.data?.target || message).channel.createMessage({ ...parameters, messageReference: { messageID: (message.data?.target || message).id } }).then(async msg => {
             messageStorage = msg.id;
             finishOff(msg)
-          });
+          }).catch((e) => {console.log(e); resolve()});
         } else {
           let channel = await bridge.getChannel(values.channel);
           if (channel.createFollowup && channel.acknowledged) {
@@ -1402,12 +1436,12 @@ module.exports = {
               followup.interaction = channel;
               finishOff(followup)
               messageStorage = followup.id;
-            })
+            }).catch((e) => {console.log(e); resolve()});
           } else if (channel.channelID && typeof channel.pinned == 'boolean' && channel.jumpLink) {
             channel.channel.createMessage({ ...parameters, messageReference: { messageID: channel.id } }).then(async msg => {
               messageStorage = msg.id;
               finishOff(msg)
-            })
+            }).catch((e) => {console.log(e); resolve()});
           } else {
             channel.createMessage(parameters).then(async msg => {
               if (channel.getOriginal) {
@@ -1419,7 +1453,7 @@ module.exports = {
               }
               messageStorage = msg.id;
               finishOff(msg)
-            })
+            }).catch((e) => {console.log(e); resolve()});
           }
         }
       } else if (messageToUpdate) {
@@ -1427,11 +1461,11 @@ module.exports = {
           if (values.replyToInteraction) {
             client.rest.interactions.editOriginalMessage(client.application.id, bridge.data.interactionTokenMap[messageToUpdate.interactionMetadata.id], messageToUpdate.id, parameters).then((msg) => {
               finishOff(msg);
-            });
+            }).catch((e) => {console.log(e); resolve()});
           } else {
             client.rest.interactions.editFollowupMessage(client.application.id, bridge.data.interactionTokenMap[messageToUpdate.interactionMetadata.id], messageToUpdate.id, parameters).then((msg) => {
               finishOff(msg);
-            });
+            }).catch((e) => {console.log(e); resolve()});
           }
 
 
@@ -1455,6 +1489,8 @@ module.exports = {
       async function finishOff(msg) {
         bridge.store(values.storeAs, msg);
 
+
+        if (values.updateComponents) return
         bridge.data.interactionHandlers[`${msg.id}`] = componentConnections;
         bridge.data.interactionHandlers[`${msg.id}`].handler = setTimeout(() => {
           bridge.data.interactionHandlers[msg.id] = undefined;

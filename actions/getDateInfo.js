@@ -72,7 +72,7 @@ module.exports = {
 
       let date = new Date();
       if (values.date.type == 'timestamp') {
-        date.setTime(bridge.transf(values.timestamp))
+        date.setTime(bridge.transf(values.date.value))
       }
       
       switch (values.get) {

@@ -102,15 +102,22 @@ module.exports = {
     let permissions = swap(p)
 
     let role = await bridge.getRole(values.role);
+    /**
+     * 
+     * @type {import('oceanic.js').TextableChannel}
+     */
     let channel = await bridge.getChannel(values.channel);
     const {Permissions} = require('oceanic.js');
 
-    let rolePermissions = role.permissions.json;
+    let rolePermissions = channel.permissionOverwrites.find(overwrite => overwrite.id == role.id)?.json || [];
+
+    let allowedPermissions = {};
 
     for (let i in values.permissions) {
       let permission = values.permissions[i].data;
       if (permission.action == 'Allow') {
         rolePermissions[permissions[permission.permission]] = true;
+        allowedPermissions[permissions[permission.permission]] = true;
       } else if (permission.action == 'Neutralize') {
         delete rolePermissions[permissions[permission.permission]]
       } else {
@@ -118,11 +125,11 @@ module.exports = {
       }
     }
 
-    let endPermissions = 0;
-    let deniedPermissions = 0;
+    let endPermissions = BigInt(0);
+    let deniedPermissions = BigInt(0);
 
     for (let permission in rolePermissions) {
-      if (rolePermissions[permission] == true) {
+      if (rolePermissions[permission] == true || allowedPermissions[permission]) {
         endPermissions = BigInt(Permissions[permission]) + BigInt(endPermissions)
       } else {
         deniedPermissions = BigInt(Permissions[permission]) + BigInt(deniedPermissions)

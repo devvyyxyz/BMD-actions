@@ -96,7 +96,8 @@ module.exports = {
     let actionRunner = bridge.runner;
     let wasEverRan = false;
 
-    const handleReaction = async (message, reactor, reaction) => {
+    const handleReaction = async (message, reactor, fullReaction) => {
+      let reaction = fullReaction.emoji;
       let matchesEmoji = true;
       let matchesTarget = false;
       let matchesMessage = false;

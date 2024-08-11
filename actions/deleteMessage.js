@@ -2,7 +2,6 @@ module.exports = {
   category: "Messages",
   data: {
     name: "Delete Message",
-    message: {value: "", type: "commandMessage"}
   },
   UI: [
     {

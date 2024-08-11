@@ -4,7 +4,7 @@ module.exports = {
     channel: {type: "none", value: ""},
     image: {type: "none", value: ""},
   },
-  category: "Work In Progress",
+  category: "Server Events",
   UI: [
     {
       element: "input",
@@ -37,7 +37,8 @@ module.exports = {
       element: "image",
       name: "Event Image",
       also: {none: "None"},
-      and: {none: false}
+      and: {none: false},
+      storeAs: "image"
     },
     "-",
     {

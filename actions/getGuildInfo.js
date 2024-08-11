@@ -98,10 +98,10 @@ module.exports = {
         output = guild.iconURL();
         break;
       case "humans":
-        output = (await this.getMembers(bridge)).filter(m => !m.bot);
+        output = (await this.getMembers({guild})).filter(m => !m.bot);
         break;
       case "bots":
-        output = (await this.getMembers(bridge)).filter(m => m.bot);
+        output = (await this.getMembers({guild})).filter(m => m.bot);
         break;
       case "owner":
         let owner = await bridge.getUser({ type: "id", value: guild.ownerID });
@@ -133,6 +133,9 @@ module.exports = {
         break
       case "createdAt":
         output = guild.createdAt.getTime();
+        break
+      case "roles":
+        output = guild.roles.toArray();
         break
       default:
         output = guild[values.get.type];

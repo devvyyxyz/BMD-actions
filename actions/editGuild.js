@@ -142,13 +142,13 @@ module.exports = {
       editParameters.icon = await bridge.getImage(values.icon)
     }
     if (values.splash && values.splash.type != 'unmodified') {
-      editParameters.splash = await bridge.getImage(values.icon)
+      editParameters.splash = await bridge.getImage(values.splash)
     }
     if (values.discoverySplash && values.discoverySplash.type != 'unmodified') {
-      editParameters.discoverySplash = await bridge.getImage(values.icon)
+      editParameters.discoverySplash = await bridge.getImage(values.discoverySplash)
     }
     if (values.banner && values.banner.type != 'unmodified') {
-      editParameters.banner = await bridge.getImage(values.icon)
+      editParameters.banner = await bridge.getImage(values.banner)
     }
 
     if (values.guildName == 'Change') {

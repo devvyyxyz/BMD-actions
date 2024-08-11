@@ -16,14 +16,11 @@ module.exports = {
     }
   ],
   subtitle: (data) => {
-    return `Path: ${data.path}`
+    return `${data.path}`
   },
   compatibility: ["Any"],
   run(values, message, client, bridge) {
-    let fs = bridge.fs;
-
-    let file = fs.readFileSync(bridge.file(values.path), 'utf8');
-
+    let file = bridge.fs.readFileSync(bridge.file(values.path), 'utf8');
     bridge.store(values.store, file)
   },
 };

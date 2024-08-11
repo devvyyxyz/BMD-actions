@@ -9,7 +9,7 @@ module.exports = {
     },
     "-",
     {
-      element: "input",
+      element: "largeInput",
       storeAs: "value",
       name: "Value"
     }

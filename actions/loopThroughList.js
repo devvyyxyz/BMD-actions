@@ -31,7 +31,7 @@ module.exports = {
     "-",
     {
       element: "toggle",
-      name: "Await Each Iteration To Finish Running",
+      name: "Await Each Iteration To Finish Execution",
       storeAs: "await"
     }
   ],

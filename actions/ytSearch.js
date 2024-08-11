@@ -29,6 +29,7 @@ module.exports = {
         { name: "URL" },
         { name: "Title" },
         { name: "Track" },
+        { name: "Tracks" },
         { name: "ID" },
         { name: "Thumbnail URL" },
         { name: "Upload Timestamp" },
@@ -75,16 +76,24 @@ module.exports = {
 
     switch (values.get) {
       case "Track":
-        const ytdl = require("play-dl");
-        let stream = await ytdl.stream(video.url);
-        const { createAudioResource } = require("@discordjs/voice");
-
+        const { Innertube } = require('youtubei.js');
+        const { createAudioResource } = require('@discordjs/voice');
+        const youtube = await Innertube.create().catch();
+    
+        // Get detailed information about the first video
+        const videoInfo = await youtube.getInfo(video.videoId);
+    
+        const format = videoInfo.chooseFormat({ type: 'audio', quality: 'best' });
+        const url = format?.decipher(youtube.session.player);
+    
+        const audio = createAudioResource(url);
+    
         output = {
           name: video.title,
           author: video.author.name,
           url: video.url,
           src: "YouTube",
-          audio: createAudioResource(stream.stream, {inputType: stream.type}),
+          audio,
           file: null,
           raw: video
         };

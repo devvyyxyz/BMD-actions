@@ -1,3 +1,5 @@
+const generatePoToken = require('./generatePoToken');
+
 module.exports = {
   data: {
     name: "Play YouTube Song",
@@ -29,69 +31,68 @@ module.exports = {
     },
     "-",
     {
-      element: "dropdown",
-      name: "Quality",
-      storeAs: "quality",
-      choices: [
-        { name: "Default" },
-        { name: "Good" },
-        { name: "Bad" },
-      ]
-    },
-    "-",
-    {
-      element: "dropdown",
-      name: "Memory Allocation",
-      storeAs: "memoryAllocation",
-      choices: [
-        { name: "Default" },
-        { name: "128 Kilobytes" },
-        { name: "256 Kilobytes" },
-        { name: "1 Megabyte" },
-        { name: "5 Megabytes" },
-        { name: "Whole Song" },
-      ],
-    },
+      element: "toggle",
+      storeAs: "tokenGeneration",
+      name: "Token Generation (Slower, Fewer Cutoffs)"
+    }
   ],
   subtitle: (values, constants) => {
     return `URL: ${values.url} - ${values.queuing}`;
   },
   compatibility: ["Any"],
   async run(values, message, client, bridge) {
-    const ytdl = require("play-dl");
-    const { createAudioResource } = require("@discordjs/voice");
-    const { StreamType } = require("@discordjs/voice");
+    const { Innertube, ClientType } = require('youtubei.js');
+    const search = require('yt-search');
+    const { createAudioResource } = require('@discordjs/voice');
 
-    let hWMs = {
-      Default: 512,
-      "128 Kilobytes": 128,
-      "256 Kilobytes": 256,
-      "1 Megabyte": 1024,
-      "5 Megabytes": 5000,
-      "Whole Song": 99999,
-    };
+    let additionalOptions = {};
+    if (values.tokenGeneration) {
+      let clientData = await bridge.getGlobal({
+        class: "music",
+        name: "data"
+      });
+      if (!clientData || clientData.uses > 3) {
+        clientData = await generatePoToken.run({
+          store: { value: "", type: "temporary" }
+        }, message, client, bridge);
+        bridge.createGlobal({
+          class: "music",
+          name: "data",
+          value: {
+            uses: 1,
+            ...clientData
+          }
+        });
 
-    let qualities = {
-      "Default": 256,
-      "Good": 512,
-      "Bad": 128
+
+      } else {
+        clientData.uses++
+      }
+      additionalOptions = {
+        po_token: clientData.po,
+        visitor_id: clientData.vd
+      }
     }
-
-    let stream = await ytdl.stream(bridge.transf(values.url), {
-      precache: hWMs[values.memoryAllocation],
-      quality: qualities[values.quality]
+    const youtube = await Innertube.create({
+      generate_session_locally: true,
+      ...additionalOptions
     });
 
-    let search = require("yt-search");
+    const result = await search(bridge.transf(values.url));
 
-    let audio = createAudioResource(stream.stream, {inputType: stream.type});
+    let clientType = values.tokenGeneration ? "IOS" : "WEB";
+    const videoInfo = await youtube.getInfo(result.videos[0].videoId, clientType);
+
+    const format = videoInfo.chooseFormat({ type: 'audio' });
+    const url = format?.decipher(youtube.session.player);
+
+    const audio = createAudioResource(url);
 
     let utilities = bridge.getGlobal({
       class: "voice",
       name: bridge.guild.id,
     });
 
-    let result = await search(bridge.transf(values.url));
 
     switch (values.queuing) {
       case `Don't Queue, Just Play`:
@@ -103,7 +104,8 @@ module.exports = {
           url: bridge.transf(values.url),
           src: "YouTube",
           audio,
-          raw: result.videos[0]
+          raw: result.videos[0],
+          playURL: url
         };
         client.emit('trackStart', bridge.guild, utilities.channel, utilities.nowPlaying);
         break;

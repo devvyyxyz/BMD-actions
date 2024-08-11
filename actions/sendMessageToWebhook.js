@@ -19,6 +19,13 @@ module.exports = {
     },
     "-",
     {
+      element: "inputGroup",
+      nameSchemes: ["Webhook Name", "Webhook Avatar URL"],
+      storeAs: ["webhookName", "webhookAvatarURL"],
+      placeholder: ["Optional", "Optional"]
+    },
+    "-",
+    {
       element: "store",
       storeAs: "store"
     }
@@ -37,7 +44,14 @@ module.exports = {
     /**
      * @type {Message}
      */
-    let message = bridge.get(values.message)
+    let message = bridge.get(values.message);
+
+    if (values.webhookName) {
+      message.username = bridge.transf(values.webhookName)
+    }
+    if (values.webhookAvatarURL) {
+      message.avatarURL = bridge.transf(values.webhookAvatarURL)
+    }
 
     let executedMessage = webhook.execute(message);
 

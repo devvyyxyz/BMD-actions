@@ -81,17 +81,17 @@ module.exports = {
     if (values.category) {
       channelOptions.parentID = (await bridge.getChannel(values.category)).id;
     }
+    if (values.private == true) {
+      let roleID =  bridge.guild.roles.find(r => r.position == 0).id;
+
+      channelOptions.permissionOverwrites = [{
+        deny: Permissions.VIEW_CHANNEL,
+        type: OverwriteTypes.ROLE,
+        id: roleID
+      }];
+    }
 
     let channel = await bridge.guild.createChannel(ChannelTypes.GUILD_VOICE, channelOptions);
-
-
-    let roleID =  (await bridge.guild.getRoles()).find(r => r.position == 0).id;
-    if (values.private == true) {
-      await channel.editPermission(roleID, {
-        deny: Permissions.VIEW_CHANNEL,
-        type: OverwriteTypes.ROLE
-      });
-    }
     
     bridge.store(values.store, channel)
   },

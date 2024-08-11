@@ -31,7 +31,7 @@ module.exports = {
   async run(values, message, client, bridge) {
     let fs = bridge.fs;
 
-    if (fs.existsSync(bridge.file(bridge.transf(values.path)))) {
+    if (fs.existsSync(bridge.file(values.path))) {
       await bridge.call(values.true, values.trueActions)
     } else {
       await bridge.call(values.false, values.falseActions)

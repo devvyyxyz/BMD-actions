@@ -15,13 +15,16 @@ module.exports = {
   },
   async run(values, message, client, bridge) {
     let channel = await bridge.getChannel(values.channel);
+
     try {
       let member = bridge.guild.members.get(client.application.id) || (await client.rest.users.get(client.application.id));
       const res = member.voiceState;
       if (res?.channelID == channel.id && bridge.getGlobal({ class: "voice", name: bridge.guild.id })) {
         return
       }
-    } catch (err) {}
+    } catch (err) {
+      console.log(err)
+    }
 
     let connection = client.joinVoiceChannel({
       channelID: channel.id,

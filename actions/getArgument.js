@@ -61,6 +61,8 @@ module.exports = {
       }
       data.data.source = 'Text'
     }
+
+    data.refreshUI()
   },
 
   subtitle: (data, constants) => {

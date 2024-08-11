@@ -24,13 +24,14 @@ module.exports = {
         id: { name: "ID" },
         avatarURL: { name: "Avatar URL" },
         bannerURL: { name: "Banner URL" },
-        joinedAt: { name: "Join Timestamp" },
         highestRole: { name: "Highest Role" },
         roles: { name: "Role List" },
         communicationDisabledUntil: { name: "Timeout End Timestamp" },
+        joinedAt: { name: "Join Timestamp" },
+        premiumSince: { name: "Boosting Start Timestamp" },
+        createdAt: { name: "Account Creation Timestamp" },
         accentColor: { name: "Accent Color" },
         voiceChannel: { name: "Voice Channel" },
-        premiumSince: { name: "Boosting Start Timestamp" },
         status: { name: "Status" },
         statusText: { name: "Status Text" },
       },
@@ -69,6 +70,9 @@ module.exports = {
       case "createdAt":
         output = user.createdAt.getTime();
         break;
+      case "joinedAt":
+        output = member.joinedAt.getTime();
+        break;
       case "accentColor":
         output = (await client.rest.users.get(user.id)).accentColor.toString(16);
         break
@@ -77,17 +81,17 @@ module.exports = {
         output = restUser.bannerURL();
         break
       case "communicationDisabledUntil":
-        output = member.communicationDisabledUntil?.getTime();
+      output = member.communicationDisabledUntil?.getTime();
         break;
       case "statusText":
         try {
-          output = user.presence.activities.filter(activity => activity.type == 4 && activity.name == 'Custom Status')[0].state;
+          output = member.presence.activities.filter(activity => activity.type == 4 && activity.name == 'Custom Status')[0].state;
         } catch (err) {
           output = ''
         }
         break
       case "status":
-        if (member.presence?.activities[0]) {
+        if (member.presence?.activities) {
           output = member.presence.status;
         } else {
           output = '';

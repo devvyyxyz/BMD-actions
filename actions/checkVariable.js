@@ -46,7 +46,7 @@ module.exports = {
         {
           name: "Equal Or Greater Than",
           field: true
-        },  
+        },
         {
           name: "Is Number"
         },
@@ -72,29 +72,29 @@ module.exports = {
       name: "If False"
     }
   ],
-  
+
   subtitle: (data, constants) => {
     let variable = constants.variable(data.variable);
 
     switch (data.comparator) {
       case 'Equals':
-      return `${variable} Equals ${data.compareValue}`;
+        return `${variable} Equals ${data.compareValue}`;
         break
 
       case 'Equals Exactly':
         return `${variable} Equals ${data.compareValue}`;
-          break
-      
-      case 'Doesn\'t Equal':
-      return `${variable} Doesn't Equal ${data.compareValue}`;
         break
-        
+
+      case 'Doesn\'t Equal':
+        return `${variable} Doesn't Equal ${data.compareValue}`;
+        break
+
       case 'Exists':
-      return `${variable} Exists`
+        return `${variable} Exists`
         break
 
       case 'Less Than':
-      return `${variable} Is Less Than ${data.compareValue}`
+        return `${variable} Is Less Than ${data.compareValue}`
         break
 
       case 'Greater Than':
@@ -103,12 +103,12 @@ module.exports = {
 
       case 'Equal Or Less Than':
         return `${variable} Is Equal Or Less Than ${data.compareValue}`
-          break
-    
+        break
+
       case 'Equal Or Greater Than':
         return `${variable} Is Equal Or Greater Than ${data.compareValue}`
         break
-      
+
       case 'Is Number':
         return `${variable} Is A Number`
         break
@@ -148,7 +148,7 @@ module.exports = {
           matchesCriteria = true;
         }
         break;
-      
+
       case "Greater Than":
         if (Number(variable) > Number(secondValue)) {
           matchesCriteria = true;
@@ -162,28 +162,28 @@ module.exports = {
         break;
 
       case "Equal Or Greater Than":
-        if (Number(variable) > Number(secondValue)) {
+        if (Number(variable) >= Number(secondValue)) {
           matchesCriteria = true;
         }
         break;
 
       case "Equal Or Less Than":
-        if (Number(variable) < Number(secondValue)) {
+        if (Number(variable) <= Number(secondValue)) {
           matchesCriteria = true;
         }
         break;
-      
+
       case "Is Number":
         if (typeof parseInt(variable) == 'number' && `${parseInt(variable)}` != `NaN`) {
           matchesCriteria = true
         }
         break
-      
+
       case "Matches Regex":
         matchesCriteria = Boolean(
           variable.match(new RegExp("^" + secondValue + "$", "i"))
         );
-        break
+        break;
     }
 
 

@@ -20,10 +20,14 @@ module.exports = {
           name: "Hours",
           field: true
         },
+        {
+          name: "Miliseconds",
+          field: true
+        }
       ]
     } 
   ],
-  subtitle: "Amount Of Time: $[time]$ $[timeUnit]$",
+  subtitle: "$[time]$ $[timeUnit]$",
   async run(values, message, client, bridge) {
     function wait(seconds) {
       return new Promise((resolve) => {
@@ -41,6 +45,9 @@ module.exports = {
         break;
       case "Hours":
         time = 1000 * 60 * 60 * timeAmount;
+        break;
+      case "Miliseconds":
+        time = timeAmount;
         break;
     }
 

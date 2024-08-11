@@ -18,6 +18,7 @@ module.exports = {
       choices: {
         memberCount: { name: "Member Count" },
         messageCount: { name: "Message Count" },
+        members: { name: "Members" },
         owner: { name: "Owner" },
         parent: { name: "Parent" },
         parentMessage: { name: "Starter Message" },
@@ -66,6 +67,9 @@ module.exports = {
           break
         case 'messages':
           output = await thread.getMessages({ limit: Infinity })
+          break
+        case 'members':
+          output = await thread.getThreadMembers();
           break
       }
     } else {

@@ -41,7 +41,6 @@ module.exports = {
   
   async run(values, msg, client, bridge) {
     let user = await bridge.getUser(values.member)
-    let member = await user.member;
 
     let deleteMessageSeconds;
 
@@ -53,9 +52,8 @@ module.exports = {
       }
     }
 
-    await member.ban({
-      deleteMessageSeconds,
-      reason: bridge.transf(values.reason),
+    await bridge.guild.createBan(user.id, {
+      reason: bridge.transf(values.reason) || undefined
     })
   },
 };

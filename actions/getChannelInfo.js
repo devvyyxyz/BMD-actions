@@ -18,6 +18,7 @@ module.exports = {
         name: { name: "Name" },
         topic: { name: "Topic" },
         id: { name: "ID" },
+        url: { name: "URL" },
         guild: { name: "Server" },
         messages: { name: "Messages" },
         parent: { name: "Category" },
@@ -75,6 +76,12 @@ module.exports = {
         case 'messages':
           output = await channel.getMessages({ limit: 1000 });
           break
+        case 'url':
+          if (channel.guildID) {
+            output = `https://discord.com/channels/${channel.guildID}/${channel.id}`
+          } else {
+            output = `https://discord.com/channels/@me/${channel.id}`
+          }
       }
     } else {
       output = channel[values.get.type]
